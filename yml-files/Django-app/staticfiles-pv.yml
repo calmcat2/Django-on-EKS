@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: staticfiles-pv
+  namespace: django-app
+  labels:
+    type: local
+    app: django-staticfiles
+spec:
+  storageClassName: ""
+  capacity:
+    storage: 500M
+  accessModes:
+    - ReadWriteMany
+  mountOptions:
+    - allow-delete
+    - region us-east-1
+    # - prefix staticfiles/
+  csi:
+    driver: s3.csi.aws.com # Required
+    volumeHandle: s3-csi-driver-volume
+    volumeAttributes:
+      bucketName: ????
+  
+
+
