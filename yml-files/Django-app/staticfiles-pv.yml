@@ -9,18 +9,18 @@ metadata:
 spec:
   storageClassName: ""
   capacity:
-    storage: 500M
+    storage: 1G
   accessModes:
     - ReadWriteMany
   mountOptions:
     - allow-delete
     - region us-east-1
-    # - prefix staticfiles/
+    - allow-overwrite
   csi:
-    driver: s3.csi.aws.com # Required
+    driver: s3.csi.aws.com 
     volumeHandle: s3-csi-driver-volume
     volumeAttributes:
-      bucketName: ????
+      bucketName: django-eks-static-files
   
 
 

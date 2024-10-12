@@ -4,7 +4,6 @@ metadata:
   name: nginx-deploy
   namespace: django-app
 spec:
-  serviceAccountName: s3-csi-driver-sa
   replicas: 1
   selector:
     matchLabels:

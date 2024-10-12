@@ -10,3 +10,5 @@ data:
   DEBUG: "False"
   ALLOWED_HOSTS: "localhost"
   CSRF_TRUSTED_ORIGINS: "http://localhost:30005"
+  MYSQL_DATABASE: "littlelemon"
+ 

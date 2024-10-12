@@ -13,28 +13,29 @@ spec:
       labels:
         app: django-app
     spec:
-      serviceAccountName: s3-csi-driver-sa
+      serviceAccountName: db-secret-access
       volumes:
         - name: staticfiles
           persistentVolumeClaim:
             claimName: staticfiles-pvc
+        - name: secrets-store-inline
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: "aws-secret"
       initContainers:
         - name: wait-for-mysql
           image: busybox:1.28
           command: ['sh', '-c', 'until nc -z mysql-svc 3306; do echo waiting for mysql; sleep 2; done;']
       containers:
-        - image: mhe5/django-k8s-custom-web:latest
+        - image: 637423641675.dkr.ecr.us-east-1.amazonaws.com/eks/django-eks:latest
           imagePullPolicy: Always
           name: django-app-container
           envFrom:
           - configMapRef:
               name: app-cm
           env:
-          - name: MYSQL_DATABASE
-            valueFrom:
-              secretKeyRef:
-                name: mysql-secret
-                key: MYSQL_DATABASE
           - name: MYSQL_USER
             valueFrom:
               secretKeyRef:
@@ -45,11 +46,14 @@ spec:
               secretKeyRef:
                 name: mysql-secret
                 key: MYSQL_PASSWORD
+          volumeMounts:
+          - name: secrets-store-inline
+            mountPath: "/mnt/secrets-store"
+            readOnly: true
+          - mountPath: "/data/static"
+            name: staticfiles
           ports:
             - containerPort: 8000
-          volumeMounts:
-            - mountPath: "/data/static"
-              name: staticfiles
           readinessProbe:
             httpGet:
               path: /health
@@ -66,11 +70,17 @@ spec:
             postStart:
               exec:
                 command: 
-                  - /bin/sh
+                  - /bin/bash
                   - -c
                   - |
                     python manage.py makemigrations
                     python manage.py migrate
                     python manage.py collectstatic --noinput
 
- 
+          resources:
+            requests:
+              cpu: 500m
+              memory: 128Mi
+            limits:
+              cpu: 800m
+              memory: 512Mi

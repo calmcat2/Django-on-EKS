@@ -9,5 +9,5 @@ spec:
     - ReadWriteMany
   resources:
     requests:
-      storage: 500M
+      storage: 1G
   volumeName: staticfiles-pv
