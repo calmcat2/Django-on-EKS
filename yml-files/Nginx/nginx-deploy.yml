@@ -32,3 +32,10 @@ spec:
           readOnly: true
         - mountPath: "/data/static"
           name: staticfiles
+        resources:
+          requests:
+            memory: 100M
+            cpu: 100M
+          limits:
+            memory: 200M
+            cpu: 200M
