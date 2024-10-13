@@ -8,7 +8,7 @@ data:
   DB_HOST: "mysql-svc"
   STATIC_ROOT: "/data/static"
   DEBUG: "False"
-  ALLOWED_HOSTS: "localhost"
-  CSRF_TRUSTED_ORIGINS: "http://localhost:30005"
+  ALLOWED_HOSTS: "localhost,app2.maxinehe.top"
+  CSRF_TRUSTED_ORIGINS: "https://app2.maxinehe.top"
   MYSQL_DATABASE: "littlelemon"
  

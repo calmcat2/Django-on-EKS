@@ -15,6 +15,9 @@ spec:
     spec:
       serviceAccountName: db-secret-access
       volumes:
+        - name: staticfiles
+          persistentVolumeClaim:
+            claimName: staticfiles-pvc
         - name: secrets-store-inline
           csi:
             driver: secrets-store.csi.k8s.io
@@ -72,7 +75,7 @@ spec:
                   - |
                     python manage.py makemigrations
                     python manage.py migrate
-                    
+                    python manage.py collectstatic --noinput
 
           resources:
             requests:
