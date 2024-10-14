@@ -24,12 +24,7 @@ metadata:
     # SSL Redirect Setting
     # alb.ingress.kubernetes.io/ssl-redirect: '443'      
 spec:
-  ingressClassName: aws-ingress-class   # Ingress Class                  
-  # defaultBackend:
-  #   service:
-  #     name: nginx-svc
-  #     port:
-  #       number: 80     
+  ingressClassName: aws-ingress-class   # Ingress Class                    
   tls:
   - hosts:
     - "app2.maxinehe.top"
